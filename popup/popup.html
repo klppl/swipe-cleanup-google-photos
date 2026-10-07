@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Swipe Photos</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header class="head">
+    <img src="../icons/icon-128.png" alt="" class="logo">
+    <div>
+      <h1>Swipe Photos</h1>
+      <p>Left to trash. Right to keep.</p>
+    </div>
+  </header>
+
+  <button id="start" class="primary">
+    <span id="startLabel">Start swiping</span>
+    <kbd id="shortcut">Alt+Shift+S</kbd>
+  </button>
+  <p id="hint" class="hint">Tip: scroll Google Photos to any date first — swiping starts from what's on screen.</p>
+
+  <section class="stats">
+    <div><b id="statReviewed">0</b><span>reviewed</span></div>
+    <div><b id="statKept">0</b><span>kept</span></div>
+    <div><b id="statTrashed">0</b><span>trashed</span></div>
+  </section>
+
+  <section class="settings">
+    <label class="toggle">
+      <span>
+        <strong>Skip photos I've kept</strong>
+        <small>Never show the same keeper twice</small>
+      </span>
+      <input type="checkbox" id="skipKept">
+      <i></i>
+    </label>
+    <label class="toggle">
+      <span>
+        <strong>Show “Swipe” button</strong>
+        <small>Floating launcher on Google Photos</small>
+      </span>
+      <input type="checkbox" id="showFab">
+      <i></i>
+    </label>
+  </section>
+
+  <footer class="foot">
+    <button id="resetKept" class="link">Forget kept photos</button>
+    <span class="dot">·</span>
+    <button id="resetStats" class="link">Reset stats</button>
+  </footer>
+
+  <script src="popup.js"></script>
+</body>
+</html>

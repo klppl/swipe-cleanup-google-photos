@@ -1,0 +1,46 @@
+{
+  "manifest_version": 3,
+  "name": "Swipe Photos — Tinder-style cleanup for Google Photos",
+  "short_name": "Swipe Photos",
+  "version": "1.0.0",
+  "description": "Swipe left to trash, right to keep. Clean up your Google Photos library one photo at a time.",
+  "permissions": ["storage", "tabs"],
+  "host_permissions": ["https://photos.google.com/*"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "icons/icon-16.png",
+      "32": "icons/icon-32.png",
+      "48": "icons/icon-48.png",
+      "128": "icons/icon-128.png"
+    }
+  },
+  "icons": {
+    "16": "icons/icon-16.png",
+    "32": "icons/icon-32.png",
+    "48": "icons/icon-48.png",
+    "128": "icons/icon-128.png"
+  },
+  "commands": {
+    "toggle-swipe": {
+      "suggested_key": { "default": "Alt+Shift+S", "mac": "Alt+Shift+S" },
+      "description": "Open / close the swipe view on Google Photos"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://photos.google.com/*"],
+      "js": ["content/photos-dom.js", "content/swipe-ui.js", "content/content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": ["content/swipe.css", "icons/icon-128.png"],
+      "matches": ["https://photos.google.com/*"]
+    }
+  ]
+}
