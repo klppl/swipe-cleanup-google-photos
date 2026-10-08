@@ -1,33 +1,44 @@
-# Push a tag like v1.0.1 (matching "version" in manifest.json) to build the
-# Chrome Web Store zip and attach it to a GitHub release.
+# Run manually (Actions → Release → Run workflow) to build the extension and
+# publish it as the single rolling "latest" release. Each run moves the
+# `latest` tag to the current commit and replaces swipe-photos-latest.zip.
 name: Release
 
 on:
-  push:
-    tags: ['v*']
+  workflow_dispatch:
 
 permissions:
   contents: write
 
+concurrency: release
+
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check tag matches manifest version
-        run: |
-          version=$(python3 -c 'import json; print(json.load(open("manifest.json"))["version"])')
-          if [ "v$version" != "$GITHUB_REF_NAME" ]; then
-            echo "::error::Tag $GITHUB_REF_NAME does not match manifest version $version"
-            exit 1
-          fi
-
       - name: Build zip
-        run: ./scripts/package.sh
+        id: build
+        run: |
+          ./scripts/package.sh
+          version=$(python3 -c 'import json; print(json.load(open("manifest.json"))["version"])')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          cp "dist/swipe-photos-$version.zip" dist/swipe-photos-latest.zip
 
-      - name: Publish GitHub release
-        uses: softprops/action-gh-release@v2
-        with:
-          files: dist/*.zip
-          generate_release_notes: true
+      - name: Move the latest tag to this commit
+        run: |
+          git tag -f latest
+          git push -f origin latest
+
+      - name: Publish the latest release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ steps.build.outputs.version }}
+        run: |
+          notes="Version $VERSION, built from ${GITHUB_SHA::7}. Unzip and load the folder from chrome://extensions with Load unpacked."
+          if gh release view latest >/dev/null 2>&1; then
+            gh release edit latest --title "Swipe Photos $VERSION" --notes "$notes" --latest
+          else
+            gh release create latest --title "Swipe Photos $VERSION" --notes "$notes" --latest
+          fi
+          gh release upload latest dist/swipe-photos-latest.zip --clobber

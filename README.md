@@ -32,6 +32,8 @@ The toolbar popup shows your stats and settings.
 
 **Chrome Web Store:** _coming soon_
 
+**Download:** [swipe-photos-latest.zip](https://github.com/klppl/swipe-cleanup-google-photos/releases/latest/download/swipe-photos-latest.zip), then follow the Developer mode steps below with the unzipped folder.
+
 ### Developer mode
 
 1. Open `chrome://extensions` and switch on **Developer mode** (top right).
@@ -43,6 +45,8 @@ The toolbar popup shows your stats and settings.
 To build the zip without cloning anything, open the repository's **Actions** tab, choose **Package**, and click **Run workflow**. When the run finishes, download the `swipe-photos-<version>` artifact at the bottom of the run page. That download is the zip to upload to the Chrome Web Store. Unzip it to get a folder you can load with **Load unpacked**.
 
 To build it locally, run `./scripts/package.sh`. It writes `dist/swipe-photos-<version>.zip`.
+
+To publish a build for others to download, run the **Release** workflow the same way. It replaces `swipe-photos-latest.zip` on the single `latest` release, so the download link above always points to the newest build.
 
 ## How it works
 
