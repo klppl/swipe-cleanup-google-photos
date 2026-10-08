@@ -1,10 +1,12 @@
 {
   "manifest_version": 3,
-  "name": "Swipe Photos — Tinder-style cleanup for Google Photos",
+  "name": "Swipe Photos – Swipe to clean up Google Photos",
   "short_name": "Swipe Photos",
   "version": "1.0.0",
   "description": "Swipe left to trash, right to keep. Clean up your Google Photos library one photo at a time.",
-  "permissions": ["storage", "tabs"],
+  "homepage_url": "https://github.com/klppl/SwipeGooglePhoto",
+  "minimum_chrome_version": "102",
+  "permissions": ["storage"],
   "host_permissions": ["https://photos.google.com/*"],
   "background": {
     "service_worker": "background.js"
