@@ -487,6 +487,8 @@ kbd {
 .sp-done-actions { display: flex; gap: 12px; margin-top: 16px; }
 
 .sp-confetti { position: absolute; left: 50%; top: 68px; width: 0; height: 0; pointer-events: none; }
+/* Keep the burst behind the text and buttons so it never hurts readability. */
+.sp-done .sp-progress-card > :not(.sp-confetti) { position: relative; z-index: 1; }
 .sp-confetti i {
   position: absolute; width: 8px; height: 12px; border-radius: 2px;
   opacity: 0;

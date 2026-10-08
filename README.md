@@ -2,6 +2,32 @@
 
 Tinder-style cleanup for Google Photos: **swipe left to trash, right to keep.**
 
+![Swiping right to keep a photo](screenshots/keep.png)
+
+## What it looks like
+
+A **Swipe** button appears on Google Photos. Click it, or press **Alt+Shift+S**, to start.
+
+![The Swipe button on the Google Photos grid](screenshots/grid.png)
+
+Drag a photo left to mark it for the trash, or right to keep it. You can also use a two-finger trackpad swipe or the arrow keys.
+
+![Swiping left to mark a photo for the trash](screenshots/trash.png)
+
+Nothing is deleted while you swipe. When you're ready, **Review & trash** shows everything you marked. Tap a photo to change your mind.
+
+![Reviewing the photos marked for the trash](screenshots/review.png)
+
+Confirming moves them to Google Photos **Trash**, where you can still restore them for 60 days.
+
+![Photos moved to the trash](screenshots/done.png)
+
+The toolbar popup shows your stats and settings.
+
+<img src="screenshots/popup.png" width="330" alt="The toolbar popup with stats and settings">
+
+<sub>Screenshots show the real extension running on a demo photo library.</sub>
+
 ## Install
 
 **Chrome Web Store:** _coming soon_
@@ -46,12 +72,6 @@ If Google changes its markup, `content/photos-dom.js` is the only file that shou
 ## Privacy
 
 Everything stays in your browser: no servers, no analytics, no ads. The extension only runs on photos.google.com and stores its data in `chrome.storage.local`. See [PRIVACY.md](PRIVACY.md).
-
-## Releasing to the Chrome Web Store
-
-1. Bump `"version"` in `manifest.json` and add an entry to [CHANGELOG.md](CHANGELOG.md).
-2. Build the upload zip with `./scripts/package.sh` (writes `dist/swipe-photos-<version>.zip`), or push a tag `v<version>` and GitHub Actions attaches the zip to a release.
-3. Upload it in the [Developer Dashboard](https://chrome.google.com/webstore/devconsole).
 
 ## License
 
