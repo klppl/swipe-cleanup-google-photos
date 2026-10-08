@@ -68,17 +68,21 @@
       this.acct = acct;
       this.keptKey = `kept:${acct}`;
       this.markedKey = `marked:${acct}`;
+      this.resumeKey = `resume:${acct}`;
       this.saveKept = debounce(() => this.write(this.keptKey, [...this.kept].slice(-MAX_KEPT_IDS)), 600);
       this.saveMarked = debounce(() => this.write(this.markedKey, [...this.marked.values()]), 300);
       this.saveStats = debounce(() => this.write('stats', this.stats), 600);
+      this.saveResume = debounce(() => this.write(this.resumeKey, this.resume), 400);
     }
 
     async load() {
-      const data = await chrome.storage.local.get(['settings', 'stats', this.keptKey, this.markedKey]);
+      const data = await chrome.storage.local.get(['settings', 'stats', this.keptKey, this.markedKey, this.resumeKey]);
       this.settings = { ...DEFAULT_SETTINGS, ...data.settings };
       this.stats = { ...DEFAULT_STATS, ...data.stats };
       this.kept = new Set(data[this.keptKey] || []);
       this.marked = new Map((data[this.markedKey] || []).map((i) => [i.id, i]));
+      // The last photo you kept: a stable bookmark to continue from next time (trashed photos vanish).
+      this.resume = data[this.resumeKey] || null;
       return this;
     }
 
@@ -137,7 +141,9 @@
       const acct = dom.accountKey();
       this.store = await new Store(acct).load();
 
-      const resumable = this.session && this.session.acct === acct && this.session.path === location.pathname;
+      // Ticking a photo in Google Photos means "start here", which overrides resuming this tab's session.
+      const resumable =
+        !dom.hasSelection() && this.session && this.session.acct === acct && this.session.path === location.pathname;
       if (!resumable) this.session = this.newSession(acct);
 
       this.isOpen = true;
@@ -157,7 +163,16 @@
         this.renderMessage('This is your trash', 'Open your Photos library to start swiping.');
         return;
       }
-      if (!resumable) this.startFromViewport();
+      if (!resumable) {
+        this.starting = true;
+        this.renderDeck();
+        try {
+          await this.chooseStart();
+        } finally {
+          this.starting = false;
+        }
+        if (!this.isOpen) return;
+      }
       this.renderDeck();
       if (this.remaining() < QUEUE_LOW_WATER) this.loadMore();
     }
@@ -209,7 +224,7 @@
           <section class="sp-screen sp-swipe">
             <header class="sp-top">
               <div class="sp-brand">
-                <img src="${chrome.runtime.getURL('icons/icon-128.png')}" alt="">
+                <img src="${chrome.runtime.getURL('icons/logo.png')}" alt="">
                 <span>Swipe Photos</span>
               </div>
               <div class="sp-counters">
@@ -313,6 +328,68 @@
       return this.session.queue.length - this.session.pos;
     }
 
+    /**
+     * Where a fresh session begins, in order of preference:
+     * 1. a photo you ticked in Google Photos,
+     * 2. wherever you scrolled the grid to,
+     * 3. right after the last photo you kept last time (when the grid is at the top).
+     */
+    async chooseStart() {
+      const scroller = dom.getScroller();
+      const vh = scroller.clientHeight || window.innerHeight;
+
+      const picked = dom.selectedIds()[0];
+      if (picked) {
+        await dom.clearSelection();
+        this.startAt(picked, false);
+        this.toast('Starting from the photo you selected');
+        return;
+      }
+
+      if (dom.scrollTopOf(scroller) > vh * 0.5) {
+        this.startFromViewport();
+        return;
+      }
+
+      const resume = this.store.resume;
+      if (resume?.path === location.pathname && (await dom.scrollToPhoto(resume.id, resume.offset))) {
+        if (!this.isOpen) return;
+        this.startAt(resume.id, true);
+        this.toast('Continuing where you left off', { label: 'Start from top', run: () => this.restartFromTop() });
+        return;
+      }
+      this.startFromViewport();
+    }
+
+    /** Start at photo `id` (or just after it, when `after` is true). */
+    startAt(id, after) {
+      const s = this.session;
+      const tiles = dom.scanTiles();
+      const idx = tiles.findIndex((t) => t.id === id);
+      if (idx === -1) {
+        this.startFromViewport();
+        return;
+      }
+      for (const t of tiles.slice(0, after ? idx + 1 : idx)) s.seen.add(t.id);
+      s.cursor = tiles[idx].offset;
+      this.ingest(tiles, after ? null : id);
+    }
+
+    async restartFromTop() {
+      const s = this.session;
+      s.ended = true; // stops an in-flight loadMore
+      while (this.loading) await dom.sleep(100);
+      for (const card of this.cardEls.values()) card.remove();
+      this.cardEls.clear();
+      this.session = this.newSession(s.acct);
+      dom.setScrollTop(dom.getScroller(), 0);
+      await dom.sleep(400);
+      this.startFromViewport();
+      this.renderDeck();
+      this.updateCounters();
+      if (this.remaining() < QUEUE_LOW_WATER) this.loadMore();
+    }
+
     /** Begin from the first photo visible in the grid, so you can jump to any date first. */
     startFromViewport() {
       const s = this.session;
@@ -326,8 +403,11 @@
       this.ingest(tiles);
     }
 
-    /** Add newly discovered tiles to the queue. Returns the number of never-before-seen tiles. */
-    ingest(tiles) {
+    /**
+     * Add newly discovered tiles to the queue. Returns the number of never-before-seen tiles.
+     * `forceId` is queued even if it was kept before (you explicitly picked it).
+     */
+    ingest(tiles, forceId = null) {
       const s = this.session;
       const { kept, marked, settings } = this.store;
       let fresh = 0;
@@ -337,7 +417,7 @@
         fresh++;
         s.cursor = Math.max(s.cursor, t.offset);
         if (marked.has(t.id)) continue;
-        if (settings.skipKept && kept.has(t.id)) {
+        if (settings.skipKept && kept.has(t.id) && t.id !== forceId) {
           s.skippedKept++;
           continue;
         }
@@ -362,7 +442,11 @@
         }
 
         let idle = 0;
-        for (let step = 0; step < 120 && this.remaining() < QUEUE_TARGET && this.isOpen && !this.trashing; step++) {
+        for (
+          let step = 0;
+          step < 120 && this.remaining() < QUEUE_TARGET && this.isOpen && !this.trashing && !s.ended && s === this.session;
+          step++
+        ) {
           const moved = await dom.scrollForward();
           const fresh = this.ingest(dom.scanTiles());
           idle = moved || fresh ? 0 : idle + 1;
@@ -408,6 +492,8 @@
         store.stats.kept++;
         s.kept++;
         store.saveKept();
+        store.resume = { id: item.id, offset: item.offset, path: s.path };
+        store.saveResume();
       }
       store.saveStats();
       s.history.push({ item, dir });
@@ -437,6 +523,11 @@
         store.stats.kept = Math.max(0, store.stats.kept - 1);
         s.kept--;
         store.saveKept();
+        const prevKeep = s.history.findLast((h) => h.dir === 'right');
+        if (prevKeep) {
+          store.resume = { id: prevKeep.item.id, offset: prevKeep.item.offset, path: s.path };
+          store.saveResume();
+        }
       }
       store.saveStats();
       this.renderDeck({ enteringId: last.item.id, from: last.dir });
@@ -529,7 +620,9 @@
     renderEmpty() {
       const s = this.session;
       const marked = this.store.marked.size;
-      if (!s.ended) {
+      if (this.starting) {
+        this.renderMessage('Getting ready…', 'Finding where to start.', true);
+      } else if (!s.ended) {
         this.renderMessage('Finding photos…', 'Loading your library.', true);
       } else if (!s.seen.size) {
         this.renderMessage(
@@ -578,12 +671,21 @@
       this.refs.reviewBtn.classList.toggle('has-items', marked > 0);
     }
 
-    toast(text) {
+    toast(text, action = null) {
       const t = this.refs.toast;
       t.textContent = text;
+      this.toastAction = action?.run || null;
+      if (action) {
+        const btn = document.createElement('button');
+        btn.className = 'sp-toast-action';
+        btn.dataset.a = 'toastAction';
+        btn.textContent = action.label;
+        t.append(btn);
+      }
+      t.classList.toggle('has-action', !!action);
       t.classList.add('is-visible');
       clearTimeout(this.toastTimer);
-      this.toastTimer = setTimeout(() => t.classList.remove('is-visible'), 2200);
+      this.toastTimer = setTimeout(() => t.classList.remove('is-visible'), action ? 7000 : 2200);
     }
 
     // ------------------------------------------------------------ animation
@@ -640,6 +742,10 @@
       else if (a === 'cancelTrash') this.cancelTrash = true;
       else if (a === 'clearMarked') this.clearMarked();
       else if (a === 'toggleItem') this.toggleReviewItem(btn);
+      else if (a === 'toastAction') {
+        this.refs.toast.classList.remove('is-visible');
+        this.toastAction?.();
+      }
     }
 
     onPointerDown(e) {
@@ -951,6 +1057,10 @@
       s.queue.slice(s.pos).forEach(adjust);
       this.store.marked.forEach(adjust);
       this.store.saveMarked();
+      if (this.store.resume) {
+        adjust(this.store.resume);
+        this.store.saveResume();
+      }
       // Back up generously; tiles we've already seen are de-duplicated anyway.
       s.cursor = Math.max(0, s.cursor - shift * 1.5);
     }

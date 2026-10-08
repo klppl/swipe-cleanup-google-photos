@@ -33,7 +33,7 @@ body {
 button { font: inherit; color: inherit; border: 0; background: none; cursor: pointer; padding: 0; }
 
 .head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
-.logo { width: 44px; height: 44px; border-radius: 12px; box-shadow: 0 6px 16px -6px rgba(123, 92, 255, 0.6); }
+.logo { width: 44px; height: 44px; filter: drop-shadow(0 4px 8px rgba(123, 92, 255, 0.35)); }
 h1 { margin: 0; font-size: 17px; font-weight: 650; }
 .head p { margin: 1px 0 0; color: var(--dim); font-size: 13px; }
 

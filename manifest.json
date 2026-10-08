@@ -39,7 +39,7 @@
   ],
   "web_accessible_resources": [
     {
-      "resources": ["content/swipe.css", "icons/icon-128.png"],
+      "resources": ["content/swipe.css", "icons/logo.png"],
       "matches": ["https://photos.google.com/*"]
     }
   ]

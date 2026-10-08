@@ -10,7 +10,7 @@ Tinder-style cleanup for Google Photos: **swipe left to trash, right to keep.**
 
 ## How it works
 
-- Swiping starts at the first photo **on screen**, so scroll to any date (or open an album or search) first.
+- **Choosing where to start:** tick a photo in Google Photos and then open Swipe to start from that photo. If you scrolled the grid to some date, it starts at the first photo on screen. If the grid is at the top, it continues after the last photo you kept, with a **Start from top** button in case you want to begin again.
 - Photos you swipe left go on a **trash list**. Nothing is deleted until you open **Review & trash** and confirm.
 - In review, tap any photo to keep it after all. Confirming selects the photos in Google Photos and moves them to **Trash**, where you can restore them for 60 days.
 - Photos you keep are remembered (per Google account) and skipped next time. You can turn this off in the popup.

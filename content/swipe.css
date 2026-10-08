@@ -80,7 +80,7 @@ h2, p { margin: 0; }
   z-index: 5;
 }
 .sp-brand { display: flex; align-items: center; gap: 10px; font-weight: 600; font-size: 16px; letter-spacing: 0.01em; }
-.sp-brand img { width: 30px; height: 30px; border-radius: 8px; }
+.sp-brand img { width: 30px; height: 30px; }
 .sp-counters { display: flex; gap: 8px; margin-left: auto; }
 .sp-chip {
   display: inline-flex; align-items: center; gap: 7px;
@@ -513,6 +513,16 @@ kbd {
   z-index: 20;
 }
 .sp-toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+.sp-toast.has-action.is-visible { pointer-events: auto; }
+.sp-toast.has-action { display: flex; align-items: center; gap: 14px; padding-right: 8px; }
+.sp-toast-action {
+  height: 28px; padding: 0 12px;
+  border-radius: 999px;
+  font-size: 13px; font-weight: 600;
+  background: var(--sp-surface-2);
+  transition: background 150ms;
+}
+.sp-toast-action:hover { background: rgba(255, 255, 255, 0.18); }
 
 /* ------------------------------------------------------------------ floating launcher */
 

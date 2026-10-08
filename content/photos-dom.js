@@ -224,36 +224,130 @@
     }
   }
 
-  async function setChecked(checkbox, value, timeout = 1500) {
-    if ((checkbox.getAttribute('aria-checked') === 'true') === value) return true;
-    checkbox.click();
+  /** Photo id → tile element, for every tile Google Photos currently has rendered. */
+  function renderedTiles() {
+    const map = new Map();
+    for (const anchor of document.querySelectorAll('a[href*="/photo/"]')) {
+      const id = photoIdFromHref(anchor.getAttribute('href'));
+      if (!id || map.has(id)) continue;
+      const tile = findTileFromAnchor(anchor);
+      if (isVisible(tile)) map.set(id, tile);
+    }
+    return map;
+  }
+
+  /** Wait until the grid has drawn tiles inside the visible area after a scroll. */
+  async function waitForTilesInView(scroller, maxMs = 900) {
     const start = Date.now();
-    while (Date.now() - start < timeout) {
-      if ((checkbox.getAttribute('aria-checked') === 'true') === value) return true;
-      await sleep(20);
+    await sleep(120);
+    const box = scroller === document.scrollingElement
+      ? { top: 0, bottom: window.innerHeight }
+      : scroller.getBoundingClientRect();
+    while (Date.now() - start < maxMs) {
+      for (const a of document.querySelectorAll('a[href*="/photo/"]')) {
+        const r = a.getBoundingClientRect();
+        if (r.height && r.bottom > box.top && r.top < box.bottom) return;
+      }
+      await sleep(60);
+    }
+  }
+
+  /**
+   * Scroll from `from` to `to` one screen at a time, calling `visit(renderedTiles())` on each screen.
+   * Returns true as soon as visit() returns true; false at `to`, at the bottom, or when cancelled.
+   */
+  async function sweep(from, to, visit, isCancelled = () => false) {
+    const scroller = getScroller();
+    const step = Math.max(300, scroller.clientHeight * 0.8);
+    setScrollTop(scroller, Math.max(0, from));
+    await waitForTilesInView(scroller);
+    while (!isCancelled()) {
+      if (await visit(renderedTiles())) return true;
+      const before = scrollTopOf(scroller);
+      if (before >= to) return false;
+      setScrollTop(scroller, before + step);
+      if (scrollTopOf(scroller) <= before + 5) {
+        // At the bottom: some views (albums, search) load more lazily, so give them a moment.
+        await waitForSettle(scroller, 1200);
+        setScrollTop(scroller, before + step);
+        if (scrollTopOf(scroller) <= before + 5) return false;
+      }
+      await waitForTilesInView(scroller);
     }
     return false;
   }
 
-  /** Scroll until the tile for `item` is rendered; returns the tile or null. */
-  async function locateTile(item) {
-    let tile = findTileElement(item.id);
-    if (tile) return tile;
+  /**
+   * Tick the checkbox of every item, sweeping through the grid once instead of jumping to each photo.
+   * Remembered positions are only a hint: deleting photos (or new uploads) shifts the grid.
+   */
+  async function selectItems(items, onProgress, isCancelled) {
+    const pending = new Map(items.map((i) => [i.id, i]));
+    let selected = 0;
 
+    const visit = async (tiles) => {
+      const clicked = [];
+      for (const [id, tile] of tiles) {
+        if (!pending.has(id)) continue;
+        const checkbox = selectionCheckbox(tile);
+        if (!checkbox) continue;
+        if (checkbox.getAttribute('aria-checked') !== 'true') checkbox.click();
+        clicked.push([id, checkbox]);
+      }
+      if (clicked.length) {
+        await waitFor(() => clicked.every(([, cb]) => cb.getAttribute('aria-checked') === 'true'), 1500, 30);
+        for (const [id, cb] of clicked) {
+          if (cb.getAttribute('aria-checked') === 'true') {
+            pending.delete(id);
+            selected++;
+          }
+        }
+        onProgress('select', selected, items.length);
+      }
+      return pending.size === 0;
+    };
+
+    const vh = getScroller().clientHeight || window.innerHeight;
+    const span = (list) => [Math.min(...list.map((i) => i.offset)), Math.max(...list.map((i) => i.offset))];
+
+    const [min, max] = span(items);
+    const done = await sweep(min - 2 * vh, max + 3 * vh, visit, isCancelled);
+    if (!done && pending.size && !isCancelled()) {
+      // Something moved further than expected — search a much wider stretch around the leftovers.
+      const [lo, hi] = span([...pending.values()]);
+      await sweep(lo - 30 * vh, hi + 30 * vh, visit, isCancelled);
+    }
+    return { selected, missing: [...pending.keys()] };
+  }
+
+  /** Ids of the photos currently ticked in Google Photos, in grid order. */
+  function selectedIds() {
+    const tiles = renderedTiles();
+    return scanTiles()
+      .filter((t) => selectionCheckbox(tiles.get(t.id) || document.body)?.getAttribute('aria-checked') === 'true')
+      .map((t) => t.id);
+  }
+
+  function hasSelection() {
+    return anySelected();
+  }
+
+  /** Scroll so the photo `id` (last seen near `nearOffset`) sits at the top of the grid. */
+  async function scrollToPhoto(id, nearOffset) {
     const scroller = getScroller();
     const vh = scroller.clientHeight || window.innerHeight;
-    // Positions shift when photos above get deleted or new ones arrive, so probe around the estimate.
-    const probes = [0, -0.6, 0.6, -1.2, 1.2, -2, 2, -3, 3].map((f) => item.offset - vh * 0.35 + f * vh);
-    for (const target of probes) {
-      setScrollTop(scroller, Math.max(0, target));
-      const start = Date.now();
-      while (Date.now() - start < 900) {
-        await sleep(80);
-        tile = findTileElement(item.id);
-        if (tile) return tile;
-      }
+    let found = renderedTiles().get(id) || null;
+    const visit = async (tiles) => !!(found = tiles.get(id) || null);
+    if (!found) {
+      // Deleting photos moves later ones up, so look a little around, then further above.
+      (await sweep(nearOffset - 3 * vh, nearOffset + 3 * vh, visit)) ||
+        (await sweep(nearOffset - 40 * vh, nearOffset - 3 * vh, visit));
     }
-    return null;
+    if (!found) return false;
+    const r = found.getBoundingClientRect();
+    setScrollTop(scroller, Math.max(0, scrollTopOf(scroller) + r.top - viewportTop(scroller) - 8));
+    await waitForTilesInView(scroller);
+    return true;
   }
 
   // -------------------------------------------------------------- trashing
@@ -304,25 +398,14 @@
     if (isTrashPage()) return { ok: false, selected: 0, missing: items.map((i) => i.id), reason: 'trash-page' };
 
     await clearSelection();
-    const sorted = [...items].sort((a, b) => a.offset - b.offset);
-    const missing = [];
-    let selected = 0;
-
-    for (const item of sorted) {
-      if (isCancelled()) {
-        await clearSelection();
-        return { ok: false, selected: 0, missing: [], reason: 'cancelled' };
-      }
-      const tile = await locateTile(item);
-      const checkbox = tile && selectionCheckbox(tile);
-      if (checkbox && (await setChecked(checkbox, true))) selected++;
-      else missing.push(item.id);
-      onProgress('select', selected + missing.length, sorted.length);
+    const { selected, missing } = await selectItems(items, onProgress, isCancelled);
+    if (isCancelled()) {
+      await clearSelection();
+      return { ok: false, selected: 0, missing: [], reason: 'cancelled' };
     }
-
     if (selected === 0) return { ok: false, selected, missing, reason: 'none-selected' };
 
-    onProgress('trash', selected, sorted.length);
+    onProgress('trash', selected, items.length);
     const trashBtn = await waitFor(findTrashButton, 3000);
     if (!trashBtn) return { ok: false, selected, missing, reason: 'no-trash-button' };
     const label = trashBtn.getAttribute('aria-label') || '';
@@ -350,6 +433,10 @@
     scanTiles,
     estimateHeightOf,
     scrollForward,
+    selectedIds,
+    hasSelection,
+    clearSelection,
+    scrollToPhoto,
     trashItems,
     sizedUrl,
   };
