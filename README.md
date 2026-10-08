@@ -1,6 +1,6 @@
 # Swipe Photos
 
-Tinder-style cleanup for Google Photos: **swipe left to trash, right to keep.**
+Swipe to clean up Google Photos: **swipe left to trash, right to keep.**
 
 ![Swiping right to keep a photo](screenshots/keep.png)
 
