@@ -4,7 +4,7 @@
   "short_name": "Swipe Photos",
   "version": "1.0.0",
   "description": "Swipe left to trash, right to keep. Clean up your Google Photos library one photo at a time.",
-  "homepage_url": "https://github.com/klppl/SwipeGooglePhoto",
+  "homepage_url": "https://github.com/klppl/swipe-cleanup-google-photos",
   "minimum_chrome_version": "102",
   "permissions": ["storage"],
   "host_permissions": ["https://photos.google.com/*"],

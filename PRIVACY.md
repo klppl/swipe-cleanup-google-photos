@@ -67,6 +67,6 @@ Changes to this policy are published in this file in the project repository, wit
 
 ## Contact
 
-Questions or concerns: open an issue at <https://github.com/klppl/SwipeGooglePhoto/issues>.
+Questions or concerns: open an issue at <https://github.com/klppl/swipe-cleanup-google-photos/issues>.
 
 Swipe Photos is an independent project and is not affiliated with, endorsed by or sponsored by Google LLC. Google Photos is a trademark of Google LLC.
