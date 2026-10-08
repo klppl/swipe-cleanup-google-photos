@@ -1,0 +1,28 @@
+# Run manually (Actions → Package → Run workflow) to build the extension.
+# The downloaded artifact is itself the Chrome Web Store upload zip, and once
+# unzipped it can be loaded with "Load unpacked".
+name: Package
+
+on:
+  workflow_dispatch:
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build zip
+        id: build
+        run: |
+          ./scripts/package.sh
+          version=$(python3 -c 'import json; print(json.load(open("manifest.json"))["version"])')
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          unzip -q "dist/swipe-photos-$version.zip" -d dist/swipe-photos
+
+      # GitHub zips artifacts on download, so upload the unpacked files to
+      # avoid a zip inside a zip.
+      - uses: actions/upload-artifact@v4
+        with:
+          name: swipe-photos-${{ steps.build.outputs.version }}
+          path: dist/swipe-photos/

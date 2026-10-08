@@ -5,7 +5,6 @@ name: Release
 on:
   push:
     tags: ['v*']
-  workflow_dispatch:
 
 permissions:
   contents: write
@@ -17,7 +16,6 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Check tag matches manifest version
-        if: startsWith(github.ref, 'refs/tags/')
         run: |
           version=$(python3 -c 'import json; print(json.load(open("manifest.json"))["version"])')
           if [ "v$version" != "$GITHUB_REF_NAME" ]; then
@@ -28,13 +26,7 @@ jobs:
       - name: Build zip
         run: ./scripts/package.sh
 
-      - uses: actions/upload-artifact@v4
-        with:
-          name: swipe-photos
-          path: dist/*.zip
-
       - name: Publish GitHub release
-        if: startsWith(github.ref, 'refs/tags/')
         uses: softprops/action-gh-release@v2
         with:
           files: dist/*.zip

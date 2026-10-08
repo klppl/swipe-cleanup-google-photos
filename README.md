@@ -35,8 +35,14 @@ The toolbar popup shows your stats and settings.
 ### Developer mode
 
 1. Open `chrome://extensions` and switch on **Developer mode** (top right).
-2. Click **Load unpacked** and pick this repository folder.
+2. Click **Load unpacked** and pick this repository folder, or a folder you unzipped a packaged build into (see below).
 3. Open [photos.google.com](https://photos.google.com) and click the **Swipe** button (bottom right), the toolbar icon, or press **Alt+Shift+S**.
+
+### Packaging the extension
+
+To build the zip without cloning anything, open the repository's **Actions** tab, choose **Package**, and click **Run workflow**. When the run finishes, download the `swipe-photos-<version>` artifact at the bottom of the run page. That download is the zip to upload to the Chrome Web Store. Unzip it to get a folder you can load with **Load unpacked**.
+
+To build it locally, run `./scripts/package.sh`. It writes `dist/swipe-photos-<version>.zip`.
 
 ## How it works
 
