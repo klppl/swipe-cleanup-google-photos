@@ -51,10 +51,8 @@ Everything stays in your browser: no servers, no analytics, no ads. The extensio
 
 1. Bump `"version"` in `manifest.json` and add an entry to [CHANGELOG.md](CHANGELOG.md).
 2. Build the upload zip with `./scripts/package.sh` (writes `dist/swipe-photos-<version>.zip`), or push a tag `v<version>` and GitHub Actions attaches the zip to a release.
-3. Upload it in the [Developer Dashboard](https://chrome.google.com/webstore/devconsole). Every listing field, permission justification and privacy answer is in [store/LISTING.md](store/LISTING.md).
-
-Promo tiles are rendered from `store/assets/promo.html` with `node scripts/render-promo.mjs` (needs Playwright).
+3. Upload it in the [Developer Dashboard](https://chrome.google.com/webstore/devconsole).
 
 ## License
 
-[MIT](LICENSE). Swipe Photos is not affiliated with or endorsed by Google. Google Photos is a trademark of Google LLC.
+[The Lagom License](LICENSE) (v2): use, change and share it freely; just keep the copyright line and the license with it. Swipe Photos is not affiliated with or endorsed by Google. Google Photos is a trademark of Google LLC.
