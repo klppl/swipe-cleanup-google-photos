@@ -1,5 +1,7 @@
 # Swipe Photos
 
+[![License: Lagom](https://img.shields.io/badge/license-lagom-9E2B25)](https://klppl.github.io/lagom-license/)
+
 Swipe to clean up Google Photos: **swipe left to trash, right to keep.**
 
 ![Swiping right to keep a photo](screenshots/keep.png)
