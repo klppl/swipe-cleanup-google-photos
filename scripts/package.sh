@@ -13,6 +13,7 @@ zip -X -r "$out" \
   manifest.json \
   content/*.js content/*.css \
   popup/*.html popup/*.css popup/*.js \
+  demo/*.html demo/*.css demo/*.js demo/photos/*.svg \
   icons/*.png \
   LICENSE
 echo "Built $out"

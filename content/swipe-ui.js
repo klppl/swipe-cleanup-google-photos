@@ -69,16 +69,18 @@
       this.keptKey = `kept:${acct}`;
       this.markedKey = `marked:${acct}`;
       this.resumeKey = `resume:${acct}`;
+      // Stats are shared across Google accounts, but the demo library counts on its own.
+      this.statsKey = acct === 'demo' ? 'stats:demo' : 'stats';
       this.saveKept = debounce(() => this.write(this.keptKey, [...this.kept].slice(-MAX_KEPT_IDS)), 600);
       this.saveMarked = debounce(() => this.write(this.markedKey, [...this.marked.values()]), 300);
-      this.saveStats = debounce(() => this.write('stats', this.stats), 600);
+      this.saveStats = debounce(() => this.write(this.statsKey, this.stats), 600);
       this.saveResume = debounce(() => this.write(this.resumeKey, this.resume), 400);
     }
 
     async load() {
-      const data = await chrome.storage.local.get(['settings', 'stats', this.keptKey, this.markedKey, this.resumeKey]);
+      const data = await chrome.storage.local.get(['settings', this.statsKey, this.keptKey, this.markedKey, this.resumeKey]);
       this.settings = { ...DEFAULT_SETTINGS, ...data.settings };
-      this.stats = { ...DEFAULT_STATS, ...data.stats };
+      this.stats = { ...DEFAULT_STATS, ...data[this.statsKey] };
       this.kept = new Set(data[this.keptKey] || []);
       this.marked = new Map((data[this.markedKey] || []).map((i) => [i.id, i]));
       // The last photo you kept: a stable bookmark to continue from next time (trashed photos vanish).

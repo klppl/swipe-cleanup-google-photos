@@ -30,6 +30,8 @@ The following is saved with the browser's extension storage (`storage.local`), *
 | The last photo you kept and where it is in the grid | So you can continue where you left off |
 | A timestamp used to auto-start swiping after the extension opens a Google Photos tab | Removed right after use |
 
+The bundled demo library keeps its own copy of these items, separate from your real data, and remembers which sample photos you trashed in that page's local storage. **Reset demo** on the demo page clears it.
+
 This data is never transmitted anywhere. It is not synced to your Google account by the extension.
 
 ## What the extension does on your behalf

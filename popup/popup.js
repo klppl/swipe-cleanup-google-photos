@@ -1,4 +1,5 @@
 const PHOTOS_URL = 'https://photos.google.com/';
+const DEMO_URL = chrome.runtime.getURL('demo/demo.html');
 const DEFAULT_SETTINGS = { skipKept: true, showFab: true };
 const $ = (id) => document.getElementById(id);
 
@@ -8,7 +9,7 @@ async function activeTab() {
 }
 
 function isPhotosTab(tab) {
-  return !!tab?.url?.startsWith(PHOTOS_URL);
+  return !!tab?.url && (tab.url.startsWith(PHOTOS_URL) || tab.url.startsWith(DEMO_URL));
 }
 
 async function render() {
@@ -49,6 +50,11 @@ $('start').addEventListener('click', async () => {
     await chrome.storage.local.set({ autostartAt: Date.now() });
     await chrome.tabs.reload(tab.id);
   }
+  window.close();
+});
+
+$('tryDemo').addEventListener('click', async () => {
+  await chrome.tabs.create({ url: DEMO_URL });
   window.close();
 });
 

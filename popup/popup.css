@@ -96,3 +96,4 @@ h1 { margin: 0; font-size: 17px; font-weight: 650; }
 .link:hover { color: var(--text); text-decoration: underline; }
 .link.armed, .link.armed:hover { color: var(--del); }
 .dot { color: var(--dim); }
+.hint .link { text-decoration: underline; text-underline-offset: 2px; }

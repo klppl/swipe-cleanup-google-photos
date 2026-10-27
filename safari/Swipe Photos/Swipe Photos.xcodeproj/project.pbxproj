@@ -19,6 +19,7 @@
 		FA91F8E73091372700394192 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91F8E63091372700394192 /* SafariWebExtensionHandler.swift */; };
 		FA91F9023091372700394192 /* popup in Resources */ = {isa = PBXBuildFile; fileRef = FA91F8F33091372700394192 /* popup */; };
 		FA91F9093091372700394192 /* content in Resources */ = {isa = PBXBuildFile; fileRef = FA91F8FA3091372700394192 /* content */; };
+		DE0D00000000000000000B01 /* demo in Resources */ = {isa = PBXBuildFile; fileRef = DE0D00000000000000000A01 /* demo */; };
 		FA91F90C3091372700394192 /* icons in Resources */ = {isa = PBXBuildFile; fileRef = FA91F8FD3091372700394192 /* icons */; };
 		FA91F90E3091372700394192 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = FA91F8FF3091372700394192 /* manifest.json */; };
 /* End PBXBuildFile section */
@@ -61,6 +62,7 @@
 		FA91F8E83091372700394192 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA91F8F33091372700394192 /* popup */ = {isa = PBXFileReference; lastKnownFileType = folder; name = popup; path = ../../../popup; sourceTree = "<group>"; };
 		FA91F8FA3091372700394192 /* content */ = {isa = PBXFileReference; lastKnownFileType = folder; name = content; path = ../../../content; sourceTree = "<group>"; };
+		DE0D00000000000000000A01 /* demo */ = {isa = PBXFileReference; lastKnownFileType = folder; name = demo; path = ../../../demo; sourceTree = "<group>"; };
 		FA91F8FD3091372700394192 /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = ../../../icons; sourceTree = "<group>"; };
 		FA91F8FF3091372700394192 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = ../../../manifest.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -136,6 +138,7 @@
 			children = (
 				FA91F8F33091372700394192 /* popup */,
 				FA91F8FA3091372700394192 /* content */,
+				DE0D00000000000000000A01 /* demo */,
 				FA91F8FD3091372700394192 /* icons */,
 				FA91F8FF3091372700394192 /* manifest.json */,
 			);
@@ -236,6 +239,7 @@
 				FA91F90C3091372700394192 /* icons in Resources */,
 				FA91F90E3091372700394192 /* manifest.json in Resources */,
 				FA91F9093091372700394192 /* content in Resources */,
+				DE0D00000000000000000B01 /* demo in Resources */,
 				FA91F9023091372700394192 /* popup in Resources */,
 			);
 		};

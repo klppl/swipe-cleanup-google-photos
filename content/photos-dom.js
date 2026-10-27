@@ -17,6 +17,8 @@
   // ---------------------------------------------------------------- page state
 
   function accountKey() {
+    // The bundled demo library keeps its own trash list, keepers and stats, apart from real accounts.
+    if (document.documentElement.dataset.swipeDemo) return 'demo';
     const m = location.pathname.match(/^\/u\/(\d+)\//);
     return m ? m[1] : '0';
   }
@@ -86,6 +88,7 @@
 
   /** Swap the size suffix of a googleusercontent URL, keeping the query (e.g. ?authuser=1). */
   function sizedUrl(src, size) {
+    if (!/googleusercontent\.com\//.test(src)) return src; // e.g. the demo library's own images
     const q = src.indexOf('?');
     const path = q === -1 ? src : src.slice(0, q);
     const query = q === -1 ? '' : src.slice(q);

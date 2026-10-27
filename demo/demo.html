@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en" data-swipe-demo="1">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Swipe Photos – Demo library</title>
+  <link rel="icon" href="../icons/icon-32.png">
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+  <header class="bar">
+    <img src="../icons/icon-48.png" alt="" class="logo">
+    <div class="title">
+      <h1>Demo library</h1>
+      <p>Sample photos for trying Swipe Photos without a Google account.</p>
+    </div>
+    <div class="actions">
+      <button id="showTrash" class="btn">Trash <span id="trashCount">0</span></button>
+      <button id="reset" class="btn">Reset demo</button>
+    </div>
+  </header>
+
+  <!-- Shown while photos are ticked; mirrors the selection toolbar the extension drives on Google Photos. -->
+  <div id="selectionBar" class="selection" hidden>
+    <button id="clearSelection" class="icon-btn" aria-label="Clear selection">
+      <svg viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </button>
+    <span id="selectedCount">0 selected</span>
+    <button id="trashSelected" class="icon-btn" aria-label="Move to trash" title="Move to trash">
+      <svg viewBox="0 0 24 24"><path d="M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5z"/></svg>
+    </button>
+  </div>
+
+  <div class="notice">
+    This is a built-in demo. Swipe Photos normally runs on photos.google.com; here the same extension code works on sample pictures, and "trash" only hides them on this page. Click <b>Swipe</b> at the bottom right to start.
+  </div>
+
+  <main id="scroller" class="scroller">
+    <div id="grid"></div>
+  </main>
+
+  <div id="dialog" class="dialog-backdrop" hidden>
+    <div class="dialog" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+      <h2 id="dialogTitle">Move to trash?</h2>
+      <p id="dialogText"></p>
+      <div class="dialog-actions">
+        <button id="dialogCancel" class="btn">Cancel</button>
+        <button id="dialogConfirm" class="btn btn-primary">Move to trash</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="viewer" class="viewer" hidden>
+    <div id="viewerFrame" class="viewer-frame"></div>
+    <button id="viewerClose" class="icon-btn viewer-close" aria-label="Close">
+      <svg viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+    </button>
+  </div>
+
+  <div id="trashPanel" class="trash-panel" hidden>
+    <div class="trash-head">
+      <h2>Demo trash</h2>
+      <button id="restoreAll" class="btn">Restore all</button>
+      <button id="closeTrash" class="icon-btn" aria-label="Close">
+        <svg viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+      </button>
+    </div>
+    <div id="trashGrid" class="trash-grid"></div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <!-- The demo page builds its grid first, then loads the extension's own content scripts. -->
+  <script src="demo.js"></script>
+  <script src="../content/photos-dom.js"></script>
+  <script src="../content/swipe-ui.js"></script>
+  <script src="../content/content.js"></script>
+</body>
+</html>
