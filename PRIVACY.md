@@ -1,8 +1,8 @@
 # Privacy Policy — Swipe Photos
 
-_Last updated: 8 October 2026_
+_Last updated: 27 October 2026_
 
-Swipe Photos ("the extension") is an open-source Chrome extension that helps you sort the photos in your Google Photos library by swiping. This policy explains what data the extension handles and what happens to it.
+Swipe Photos ("the extension") is an open-source browser extension for Chrome and Safari that helps you sort the photos in your Google Photos library by swiping. This policy explains what data the extension handles and what happens to it.
 
 **Short version: everything stays in your browser. The extension has no servers, sends nothing to the developer or anyone else, and contains no analytics, tracking or ads.**
 
@@ -19,7 +19,7 @@ It does **not** read your Google account name, email address, password, cookies 
 
 ## What the extension stores
 
-The following is saved with Chrome's `storage.local` API, **on your computer only**:
+The following is saved with the browser's extension storage (`storage.local`), **on your computer only**:
 
 | Data | Why |
 | --- | --- |
@@ -54,8 +54,9 @@ The developer receives no data from the extension, so there is nothing to share 
 
 ## Deleting your data
 
-- **Forget kept photos** and **Reset stats** in the extension popup clear those items.
-- Removing the extension from `chrome://extensions` deletes everything it stored.
+- **Forget kept photos** and **Reset stats** in the extension popup clear those items, and **Reset everything** clears all of it.
+- In Chrome, removing the extension from `chrome://extensions` deletes everything it stored.
+- In Safari, deleting the Swipe Photos app from your Applications folder removes the extension and everything it stored.
 
 ## Children
 

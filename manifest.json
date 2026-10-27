@@ -8,9 +8,6 @@
   "minimum_chrome_version": "102",
   "permissions": ["storage"],
   "host_permissions": ["https://photos.google.com/*"],
-  "background": {
-    "service_worker": "background.js"
-  },
   "action": {
     "default_popup": "popup/popup.html",
     "default_icon": {
@@ -25,12 +22,6 @@
     "32": "icons/icon-32.png",
     "48": "icons/icon-48.png",
     "128": "icons/icon-128.png"
-  },
-  "commands": {
-    "toggle-swipe": {
-      "suggested_key": { "default": "Alt+Shift+S", "mac": "Alt+Shift+S" },
-      "description": "Open / close the swipe view on Google Photos"
-    }
   },
   "content_scripts": [
     {

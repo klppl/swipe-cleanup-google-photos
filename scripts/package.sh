@@ -11,7 +11,6 @@ mkdir -p dist
 rm -f "$out"
 zip -X -r "$out" \
   manifest.json \
-  background.js \
   content/*.js content/*.css \
   popup/*.html popup/*.css popup/*.js \
   icons/*.png \

@@ -3,3 +3,6 @@ dist/
 .DS_Store
 node_modules/
 store/
+blog post/
+xcuserdata/
+safari/build/

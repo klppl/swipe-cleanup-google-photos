@@ -4,6 +4,8 @@
   const NS = (window.SwipePhotos = window.SwipePhotos || {});
 
   const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+  // Trash-flow trace in the page console, so a failed run can be diagnosed from a user's log.
+  const log = (...args) => console.info('[Swipe Photos]', ...args.map((a) => (typeof a === 'object' ? JSON.stringify(a) : a)));
 
   // Material "delete" icon path used by the trash button in the selection toolbar.
   const TRASH_ICON_PATH = 'M15 4V3H9v1H4v2h1v13c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V6h1V4h-5z';
@@ -285,24 +287,44 @@
     const pending = new Map(items.map((i) => [i.id, i]));
     let selected = 0;
 
-    const visit = async (tiles) => {
+    // Look the checkbox up again each time: Google Photos may re-render tiles once selection mode starts.
+    const isChecked = (id) => {
+      const tile = findTileElement(id);
+      return selectionCheckbox(tile || document.body)?.getAttribute('aria-checked') === 'true';
+    };
+
+    const clickPending = async (tiles) => {
       const clicked = [];
       for (const [id, tile] of tiles) {
         if (!pending.has(id)) continue;
         const checkbox = selectionCheckbox(tile);
         if (!checkbox) continue;
         if (checkbox.getAttribute('aria-checked') !== 'true') checkbox.click();
-        clicked.push([id, checkbox]);
+        clicked.push(id);
       }
-      if (clicked.length) {
-        await waitFor(() => clicked.every(([, cb]) => cb.getAttribute('aria-checked') === 'true'), 1500, 30);
-        for (const [id, cb] of clicked) {
-          if (cb.getAttribute('aria-checked') === 'true') {
-            pending.delete(id);
-            selected++;
-          }
-        }
-        onProgress('select', selected, items.length);
+      if (!clicked.length) return 0;
+      await waitFor(() => clicked.every(isChecked), 1500, 30);
+      let confirmed = 0;
+      for (const id of clicked) {
+        if (!isChecked(id)) continue;
+        pending.delete(id);
+        selected++;
+        confirmed++;
+      }
+      onProgress('select', selected, items.length);
+      return confirmed;
+    };
+
+    // The grid can finish drawing a screen after the first tiles appear, so look again until it stops changing.
+    const visit = async (tiles) => {
+      let seen = tiles.size;
+      for (let pass = 0; pass < 4 && pending.size; pass++) {
+        const confirmed = await clickPending(tiles);
+        log('screen', { top: Math.round(scrollTopOf(getScroller())), tiles: tiles.size, confirmed, pending: pending.size });
+        await sleep(200);
+        tiles = renderedTiles();
+        if (tiles.size === seen && !confirmed) break;
+        seen = tiles.size;
       }
       return pending.size === 0;
     };
@@ -311,12 +333,16 @@
     const span = (list) => [Math.min(...list.map((i) => i.offset)), Math.max(...list.map((i) => i.offset))];
 
     const [min, max] = span(items);
+    log('select start', { items: items.length, min, max, vh });
     const done = await sweep(min - 2 * vh, max + 3 * vh, visit, isCancelled);
     if (!done && pending.size && !isCancelled()) {
-      // Something moved further than expected — search a much wider stretch around the leftovers.
+      // Deleting photos only moves the rest up, so a remembered offset is an upper bound:
+      // sweep from the top of the grid down past the furthest leftover.
       const [lo, hi] = span([...pending.values()]);
-      await sweep(lo - 30 * vh, hi + 30 * vh, visit, isCancelled);
+      log('wide search', { pending: pending.size, lo, hi });
+      await sweep(0, hi + 30 * vh, visit, isCancelled);
     }
+    log('select done', { selected, missing: pending.size });
     return { selected, missing: [...pending.keys()] };
   }
 
@@ -372,11 +398,29 @@
     return null;
   }
 
+  const visibleDialog = () => [...document.querySelectorAll('[role="dialog"], [role="alertdialog"]')].find(isVisible);
+
+  /**
+   * After clicking trash, Google Photos either asks "Move to trash?" or (in some versions and
+   * browsers) trashes right away. Returns 'dialog', 'trashed' (selection toolbar gone for a
+   * while with no dialog), or null if neither happened.
+   */
+  async function waitForTrashOutcome(timeout = 5000) {
+    let goneSince = 0;
+    return waitFor(() => {
+      if (visibleDialog()) return 'dialog';
+      if (findTrashButton()) {
+        goneSince = 0;
+        return null;
+      }
+      // The toolbar can vanish a moment before the dialog opens, so require it to stay gone.
+      goneSince ||= Date.now();
+      return Date.now() - goneSince > 1200 ? 'trashed' : null;
+    }, timeout);
+  }
+
   async function confirmTrashDialog(trashLabel) {
-    const dialog = await waitFor(
-      () => [...document.querySelectorAll('[role="dialog"], [role="alertdialog"]')].find(isVisible),
-      5000
-    );
+    const dialog = visibleDialog();
     if (!dialog) return false;
     const buttons = [...dialog.querySelectorAll('button')].filter(isVisible);
     const wanted = trashLabel.trim().toLowerCase();
@@ -411,11 +455,16 @@
     const label = trashBtn.getAttribute('aria-label') || '';
     trashBtn.click();
 
-    if (!(await confirmTrashDialog(label))) return { ok: false, selected, missing, reason: 'no-confirm-dialog' };
+    const outcome = await waitForTrashOutcome();
+    log('trash clicked', { outcome });
+    if (outcome === 'trashed') return { ok: true, selected, missing };
+    if (outcome !== 'dialog' || !(await confirmTrashDialog(label))) {
+      return { ok: false, selected, missing, reason: 'no-confirm-dialog' };
+    }
 
     // Done when Google leaves selection mode (the trash button disappears with the selection toolbar).
     const finished = await waitFor(
-      () => !findTrashButton() && ![...document.querySelectorAll('[role="dialog"], [role="alertdialog"]')].some(isVisible),
+      () => !findTrashButton() && !visibleDialog(),
       20000 + selected * 60,
       150
     );

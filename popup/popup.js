@@ -27,9 +27,6 @@ async function render() {
     $('startLabel').textContent = 'Open Google Photos';
     $('hint').textContent = 'Swipe Photos works on photos.google.com.';
   }
-
-  const commands = await chrome.commands.getAll();
-  $('shortcut').textContent = commands.find((c) => c.name === 'toggle-swipe')?.shortcut || '';
 }
 
 async function saveSetting(key, value) {
@@ -58,17 +55,44 @@ $('start').addEventListener('click', async () => {
 $('skipKept').addEventListener('change', (e) => saveSetting('skipKept', e.target.checked));
 $('showFab').addEventListener('change', (e) => saveSetting('showFab', e.target.checked));
 
-$('resetKept').addEventListener('click', async () => {
-  if (!confirm('Forget every photo you marked as “keep”? They will show up again next time you swipe.')) return;
+// Safari's extension popup ignores confirm(), so destructive links ask for a second click instead.
+function confirmClick(id, prompt, action) {
+  const btn = $(id);
+  const label = btn.textContent;
+  let armed = null;
+  btn.addEventListener('click', async () => {
+    if (!armed) {
+      btn.textContent = prompt;
+      btn.classList.add('armed');
+      armed = setTimeout(() => {
+        armed = null;
+        btn.textContent = label;
+        btn.classList.remove('armed');
+      }, 4000);
+      return;
+    }
+    clearTimeout(armed);
+    armed = null;
+    btn.classList.remove('armed');
+    await action();
+    btn.textContent = 'Done';
+    setTimeout(() => (btn.textContent = label), 1500);
+    render();
+  });
+}
+
+confirmClick('resetKept', 'Click again to forget', async () => {
   const all = await chrome.storage.local.get(null);
   await chrome.storage.local.remove(Object.keys(all).filter((k) => k.startsWith('kept:')));
-  render();
 });
 
-$('resetStats').addEventListener('click', async () => {
-  if (!confirm('Reset your reviewed / kept / trashed counters?')) return;
-  await chrome.storage.local.remove('stats');
-  render();
+confirmClick('resetStats', 'Click again to reset', () => chrome.storage.local.remove('stats'));
+
+confirmClick('resetAll', 'Click again to reset all', async () => {
+  await chrome.storage.local.clear();
+  // An open swipe session keeps its own copy in memory; reloading the tab drops it.
+  const tab = await activeTab();
+  if (isPhotosTab(tab)) await chrome.tabs.reload(tab.id);
 });
 
 render();

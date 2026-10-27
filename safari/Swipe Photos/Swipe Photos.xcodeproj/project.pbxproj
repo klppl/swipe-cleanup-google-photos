@@ -1,0 +1,597 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 110;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		FA91F8CA3091372500394192 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91F8C93091372500394192 /* AppDelegate.swift */; };
+		FA91F8CE3091372500394192 /* Main.html in Resources */ = {isa = PBXBuildFile; fileRef = FA91F8CC3091372500394192 /* Main.html */; };
+		FA91F8D03091372500394192 /* Icon.png in Resources */ = {isa = PBXBuildFile; fileRef = FA91F8CF3091372500394192 /* Icon.png */; };
+		FA91F8D23091372500394192 /* Style.css in Resources */ = {isa = PBXBuildFile; fileRef = FA91F8D13091372500394192 /* Style.css */; };
+		FA91F8D43091372500394192 /* Script.js in Resources */ = {isa = PBXBuildFile; fileRef = FA91F8D33091372500394192 /* Script.js */; };
+		FA91F8D63091372500394192 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91F8D53091372500394192 /* ViewController.swift */; };
+		FA91F8D93091372500394192 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA91F8D73091372500394192 /* Main.storyboard */; };
+		FA91F8DB3091372600394192 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA91F8DA3091372600394192 /* Assets.xcassets */; };
+		FA91F8E23091372700394192 /* Swipe Photos Extension.appex in Embed Foundation Extensions */ = {isa = PBXBuildFile; fileRef = FA91F8E13091372700394192 /* Swipe Photos Extension.appex */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
+		FA91F8E73091372700394192 /* SafariWebExtensionHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA91F8E63091372700394192 /* SafariWebExtensionHandler.swift */; };
+		FA91F9023091372700394192 /* popup in Resources */ = {isa = PBXBuildFile; fileRef = FA91F8F33091372700394192 /* popup */; };
+		FA91F9093091372700394192 /* content in Resources */ = {isa = PBXBuildFile; fileRef = FA91F8FA3091372700394192 /* content */; };
+		FA91F90C3091372700394192 /* icons in Resources */ = {isa = PBXBuildFile; fileRef = FA91F8FD3091372700394192 /* icons */; };
+		FA91F90E3091372700394192 /* manifest.json in Resources */ = {isa = PBXBuildFile; fileRef = FA91F8FF3091372700394192 /* manifest.json */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		FA91F8E33091372700394192 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = FA91F8BE3091372500394192 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = FA91F8E03091372700394192;
+			remoteInfo = "Swipe Photos Extension";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		FA91F8EE3091372700394192 /* Embed Foundation Extensions */ = {
+			isa = PBXCopyFilesBuildPhase;
+			dstPath = "";
+			dstSubfolder = PlugIns;
+			files = (
+				FA91F8E23091372700394192 /* Swipe Photos Extension.appex in Embed Foundation Extensions */,
+			);
+			name = "Embed Foundation Extensions";
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		FA91F8C63091372500394192 /* Swipe Photos.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Swipe Photos.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA91F8C93091372500394192 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		FA91F8CD3091372500394192 /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.html; name = Base; path = Base.lproj/Main.html; sourceTree = "<group>"; };
+		FA91F8CF3091372500394192 /* Icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Icon.png; sourceTree = "<group>"; };
+		FA91F8D13091372500394192 /* Style.css */ = {isa = PBXFileReference; lastKnownFileType = text.css; path = Style.css; sourceTree = "<group>"; };
+		FA91F8D33091372500394192 /* Script.js */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.javascript; path = Script.js; sourceTree = "<group>"; };
+		FA91F8D53091372500394192 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		FA91F8D83091372500394192 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		FA91F8DA3091372600394192 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		FA91F8DC3091372600394192 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA91F8E13091372700394192 /* Swipe Photos Extension.appex */ = {isa = PBXFileReference; explicitFileType = "wrapper.app-extension"; includeInIndex = 0; path = "Swipe Photos Extension.appex"; sourceTree = BUILT_PRODUCTS_DIR; };
+		FA91F8E63091372700394192 /* SafariWebExtensionHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SafariWebExtensionHandler.swift; sourceTree = "<group>"; };
+		FA91F8E83091372700394192 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		FA91F8F33091372700394192 /* popup */ = {isa = PBXFileReference; lastKnownFileType = folder; name = popup; path = ../../../popup; sourceTree = "<group>"; };
+		FA91F8FA3091372700394192 /* content */ = {isa = PBXFileReference; lastKnownFileType = folder; name = content; path = ../../../content; sourceTree = "<group>"; };
+		FA91F8FD3091372700394192 /* icons */ = {isa = PBXFileReference; lastKnownFileType = folder; name = icons; path = ../../../icons; sourceTree = "<group>"; };
+		FA91F8FF3091372700394192 /* manifest.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; name = manifest.json; path = ../../../manifest.json; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		FA91F8C33091372500394192 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+		FA91F8DE3091372700394192 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			files = (
+			);
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		FA91F8BD3091372500394192 = {
+			isa = PBXGroup;
+			children = (
+				FA91F8C83091372500394192 /* Swipe Photos */,
+				FA91F8E53091372700394192 /* Swipe Photos Extension */,
+				FA91F8C73091372500394192 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		FA91F8C73091372500394192 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				FA91F8C63091372500394192 /* Swipe Photos.app */,
+				FA91F8E13091372700394192 /* Swipe Photos Extension.appex */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		FA91F8C83091372500394192 /* Swipe Photos */ = {
+			isa = PBXGroup;
+			children = (
+				FA91F8C93091372500394192 /* AppDelegate.swift */,
+				FA91F8D53091372500394192 /* ViewController.swift */,
+				FA91F8D73091372500394192 /* Main.storyboard */,
+				FA91F8DA3091372600394192 /* Assets.xcassets */,
+				FA91F8DC3091372600394192 /* Info.plist */,
+				FA91F8CB3091372500394192 /* Resources */,
+			);
+			path = "Swipe Photos";
+			sourceTree = "<group>";
+		};
+		FA91F8CB3091372500394192 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FA91F8CC3091372500394192 /* Main.html */,
+				FA91F8CF3091372500394192 /* Icon.png */,
+				FA91F8D13091372500394192 /* Style.css */,
+				FA91F8D33091372500394192 /* Script.js */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		FA91F8E53091372700394192 /* Swipe Photos Extension */ = {
+			isa = PBXGroup;
+			children = (
+				FA91F8F23091372700394192 /* Resources */,
+				FA91F8E63091372700394192 /* SafariWebExtensionHandler.swift */,
+				FA91F8E83091372700394192 /* Info.plist */,
+			);
+			path = "Swipe Photos Extension";
+			sourceTree = "<group>";
+		};
+		FA91F8F23091372700394192 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				FA91F8F33091372700394192 /* popup */,
+				FA91F8FA3091372700394192 /* content */,
+				FA91F8FD3091372700394192 /* icons */,
+				FA91F8FF3091372700394192 /* manifest.json */,
+			);
+			name = Resources;
+			path = "Swipe Photos Extension";
+			sourceTree = SOURCE_ROOT;
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		FA91F8C53091372500394192 /* Swipe Photos */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA91F8EF3091372700394192 /* Build configuration list for PBXNativeTarget "Swipe Photos" */;
+			buildPhases = (
+				FA91F8C23091372500394192 /* Sources */,
+				FA91F8C33091372500394192 /* Frameworks */,
+				FA91F8C43091372500394192 /* Resources */,
+				FA91F8EE3091372700394192 /* Embed Foundation Extensions */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				FA91F8E43091372700394192 /* PBXTargetDependency */,
+			);
+			name = "Swipe Photos";
+			productName = "Swipe Photos";
+			productReference = FA91F8C63091372500394192 /* Swipe Photos.app */;
+			productType = "com.apple.product-type.application";
+		};
+		FA91F8E03091372700394192 /* Swipe Photos Extension */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = FA91F8EB3091372700394192 /* Build configuration list for PBXNativeTarget "Swipe Photos Extension" */;
+			buildPhases = (
+				FA91F8DD3091372700394192 /* Sources */,
+				FA91F8DE3091372700394192 /* Frameworks */,
+				FA91F8DF3091372700394192 /* Resources */,
+			);
+			buildRules = (
+			);
+			name = "Swipe Photos Extension";
+			productName = "Swipe Photos Extension";
+			productReference = FA91F8E13091372700394192 /* Swipe Photos Extension.appex */;
+			productType = "com.apple.product-type.app-extension";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		FA91F8BE3091372500394192 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 2710;
+				LastUpgradeCheck = 2710;
+				TargetAttributes = {
+					FA91F8C53091372500394192 = {
+						CreatedOnToolsVersion = 27.1;
+					};
+					FA91F8E03091372700394192 = {
+						CreatedOnToolsVersion = 27.1;
+					};
+				};
+			};
+			buildConfigurationList = FA91F8C13091372500394192 /* Build configuration list for PBXProject "Swipe Photos" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = FA91F8BD3091372500394192;
+			minimizedProjectReferenceProxies = 1;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = FA91F8C73091372500394192 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FA91F8C53091372500394192 /* Swipe Photos */,
+				FA91F8E03091372700394192 /* Swipe Photos Extension */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		FA91F8C43091372500394192 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				FA91F8D03091372500394192 /* Icon.png in Resources */,
+				FA91F8D93091372500394192 /* Main.storyboard in Resources */,
+				FA91F8D43091372500394192 /* Script.js in Resources */,
+				FA91F8CE3091372500394192 /* Main.html in Resources */,
+				FA91F8DB3091372600394192 /* Assets.xcassets in Resources */,
+				FA91F8D23091372500394192 /* Style.css in Resources */,
+			);
+		};
+		FA91F8DF3091372700394192 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			files = (
+				FA91F90C3091372700394192 /* icons in Resources */,
+				FA91F90E3091372700394192 /* manifest.json in Resources */,
+				FA91F9093091372700394192 /* content in Resources */,
+				FA91F9023091372700394192 /* popup in Resources */,
+			);
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		FA91F8C23091372500394192 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				FA91F8D63091372500394192 /* ViewController.swift in Sources */,
+				FA91F8CA3091372500394192 /* AppDelegate.swift in Sources */,
+			);
+		};
+		FA91F8DD3091372700394192 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			files = (
+				FA91F8E73091372700394192 /* SafariWebExtensionHandler.swift in Sources */,
+			);
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		FA91F8E43091372700394192 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = FA91F8E03091372700394192 /* Swipe Photos Extension */;
+			targetProxy = FA91F8E33091372700394192 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		FA91F8CC3091372500394192 /* Main.html */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FA91F8CD3091372500394192 /* Base */,
+			);
+			name = Main.html;
+			sourceTree = "<group>";
+		};
+		FA91F8D73091372500394192 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				FA91F8D83091372500394192 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		FA91F8E93091372700394192 /* Debug configuration for PBXProject "Swipe Photos" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = macosx;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		FA91F8EA3091372700394192 /* Release configuration for PBXProject "Swipe Photos" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = macosx;
+				SWIFT_COMPILATION_MODE = wholemodule;
+			};
+			name = Release;
+		};
+		FA91F8EC3091372700394192 /* Debug configuration for PBXNativeTarget "Swipe Photos Extension" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PGX5N2V7WQ;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Swipe Photos Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Swipe Photos Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2026 klppl";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.klppl.swipephotos.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		FA91F8ED3091372700394192 /* Release configuration for PBXNativeTarget "Swipe Photos Extension" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PGX5N2V7WQ;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Swipe Photos Extension/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Swipe Photos Extension";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2026 klppl";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+					"@executable_path/../../../../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 13.0;
+				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.klppl.swipephotos.Extension;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+		FA91F8F03091372700394192 /* Debug configuration for PBXNativeTarget "Swipe Photos" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PGX5N2V7WQ;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Swipe Photos/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Swipe Photos";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2026 klppl";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				INFOPLIST_KEY_NSViewGestureRecognizerIsExclusive = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.klppl.swipephotos;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Debug;
+		};
+		FA91F8F13091372700394192 /* Release configuration for PBXNativeTarget "Swipe Photos" */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = PGX5N2V7WQ;
+				ENABLE_APP_SANDBOX = YES;
+				ENABLE_HARDENED_RUNTIME = YES;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
+				ENABLE_USER_SELECTED_FILES = readonly;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = "Swipe Photos/Info.plist";
+				INFOPLIST_KEY_CFBundleDisplayName = "Swipe Photos";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
+				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.photography";
+				INFOPLIST_KEY_NSHumanReadableCopyright = "© 2026 klppl";
+				INFOPLIST_KEY_NSMainStoryboardFile = Main;
+				INFOPLIST_KEY_NSPrincipalClass = NSApplication;
+				INFOPLIST_KEY_NSViewGestureRecognizerIsExclusive = NO;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MARKETING_VERSION = 1.0.0;
+				OTHER_LDFLAGS = (
+					"-framework",
+					SafariServices,
+					"-framework",
+					WebKit,
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.klppl.swipephotos;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				REGISTER_APP_GROUPS = YES;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_APPROACHABLE_CONCURRENCY = YES;
+				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
+				SWIFT_VERSION = 5.0;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		FA91F8C13091372500394192 /* Build configuration list for PBXProject "Swipe Photos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA91F8E93091372700394192 /* Debug configuration for PBXProject "Swipe Photos" */,
+				FA91F8EA3091372700394192 /* Release configuration for PBXProject "Swipe Photos" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		FA91F8EB3091372700394192 /* Build configuration list for PBXNativeTarget "Swipe Photos Extension" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA91F8EC3091372700394192 /* Debug configuration for PBXNativeTarget "Swipe Photos Extension" */,
+				FA91F8ED3091372700394192 /* Release configuration for PBXNativeTarget "Swipe Photos Extension" */,
+			);
+			defaultConfigurationName = Release;
+		};
+		FA91F8EF3091372700394192 /* Build configuration list for PBXNativeTarget "Swipe Photos" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FA91F8F03091372700394192 /* Debug configuration for PBXNativeTarget "Swipe Photos" */,
+				FA91F8F13091372700394192 /* Release configuration for PBXNativeTarget "Swipe Photos" */,
+			);
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = FA91F8BE3091372500394192 /* Project object */;
+	validationLevel = 1;
+}

@@ -87,7 +87,11 @@
     }
 
     write(key, value) {
-      chrome.storage.local.set({ [key]: value }).catch(() => {});
+      // Safari doesn't persist an empty array written with set(), so an emptied list would come
+      // back after a reload. Removing the key means the same thing to load().
+      const empty = value == null || (Array.isArray(value) && value.length === 0);
+      const op = empty ? chrome.storage.local.remove(key) : chrome.storage.local.set({ [key]: value });
+      op.catch((err) => console.warn('[Swipe Photos] saving', key, 'failed', err));
     }
   }
 
@@ -120,11 +124,6 @@
     }
 
     // ------------------------------------------------------------ lifecycle
-
-    async toggle() {
-      if (this.isOpen) this.close();
-      else await this.open();
-    }
 
     async open() {
       if (this.isOpen || this.opening) return;
@@ -983,6 +982,7 @@
         this.trashing = false;
         this.overlay.classList.remove('is-working');
       }
+      console.info('[Swipe Photos]', 'trash result', JSON.stringify({ ...result, missing: result.missing?.length || 0 }));
       this.finishTrash(items, result);
     }
 
@@ -1044,24 +1044,15 @@
 
     /**
      * Trashed tiles disappear from the grid, so everything below them moves up.
-     * Shift our remembered positions so we can still find (and keep loading after) the rest.
+     * Remembered photo positions are left alone on purpose: they stay an upper bound on where
+     * each photo is now, which is what the searches in photos-dom.js rely on. Shrinking them by
+     * an estimate could overshoot and send a search above the photos it is looking for.
      */
     compensateForRemoved(removed) {
       if (!removed.length) return;
       const shift = dom.estimateHeightOf(removed.length);
-      const minOffset = Math.min(...removed.map((i) => i.offset));
-      const adjust = (item) => {
-        if (item.offset > minOffset) item.offset = Math.max(minOffset, item.offset - shift);
-      };
-      const s = this.session;
-      s.queue.slice(s.pos).forEach(adjust);
-      this.store.marked.forEach(adjust);
-      this.store.saveMarked();
-      if (this.store.resume) {
-        adjust(this.store.resume);
-        this.store.saveResume();
-      }
       // Back up generously; tiles we've already seen are de-duplicated anyway.
+      const s = this.session;
       s.cursor = Math.max(0, s.cursor - shift * 1.5);
     }
 
